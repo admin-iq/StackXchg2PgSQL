@@ -60,7 +60,7 @@ cargo install diesel_cli --no-default-features --features postgres
 ### Clone and Build
 
 ```bash
-git clone https://github.com/your-username/stackxchg2pgsql.git
+git clone https://github.com/admin-iq/stackxchg2pgsql.git
 cd stackxchg2pgsql
 cargo build --release
 ```
