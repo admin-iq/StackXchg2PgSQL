@@ -70,7 +70,7 @@ fn load_badges(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for Badge objects from XML file
     let badges_iter = XmlModelIterator::<Badge>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for badges: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for badges: {}", error))?;
 
     // Process each badge in the XML file
     for badge in badges_iter {
@@ -80,9 +80,9 @@ fn load_badges(
                 diesel::insert_into(schema::badges::table)
                     .values(&badge)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting badge into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting badge into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing badge: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing badge: {}", error), // Log error but continue processing
         }
     }
 
@@ -111,7 +111,7 @@ fn load_comments(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for Comment objects from XML file
     let comments_iter = XmlModelIterator::<Comment>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for comments: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for comments: {}", error))?;
 
     // Process each comment in the XML file
     for comment in comments_iter {
@@ -121,9 +121,9 @@ fn load_comments(
                 diesel::insert_into(schema::comments::table)
                     .values(&comment)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting comment into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting comment into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing comment: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing comment: {}", error), // Log error but continue processing
         }
     }
 
@@ -152,7 +152,7 @@ fn load_posts(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for Post objects from XML file
     let posts_iter = XmlModelIterator::<Post>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for posts: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for posts: {}", error))?;
 
     // Process each post in the XML file
     for post in posts_iter {
@@ -162,9 +162,9 @@ fn load_posts(
                 diesel::insert_into(schema::posts::table)
                     .values(&post)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting post into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting post into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing post: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing post: {}", error), // Log error but continue processing
         }
     }
 
@@ -192,8 +192,12 @@ fn load_post_history(
     file_path: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for PostHistory objects from XML file
-    let post_history_iter = XmlModelIterator::<PostHistory>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for post history: {}", e))?;
+    let post_history_iter = XmlModelIterator::<PostHistory>::new(file_path).map_err(|error| {
+        format!(
+            "Error creating XML model iterator for post history: {}",
+            error
+        )
+    })?;
 
     // Process each post history record in the XML file
     for post_history in post_history_iter {
@@ -203,9 +207,11 @@ fn load_post_history(
                 diesel::insert_into(schema::post_historys::table)
                     .values(&post_history)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting post history into database: {}", e))?;
+                    .map_err(|error| {
+                        format!("Error inserting post history into database: {}", error)
+                    })?;
             }
-            Err(e) => eprintln!("Error processing post history: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing post history: {}", error), // Log error but continue processing
         }
     }
 
@@ -233,8 +239,12 @@ fn load_post_links(
     file_path: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for PostLink objects from XML file
-    let post_links_iter = XmlModelIterator::<PostLink>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for post links: {}", e))?;
+    let post_links_iter = XmlModelIterator::<PostLink>::new(file_path).map_err(|error| {
+        format!(
+            "Error creating XML model iterator for post links: {}",
+            error
+        )
+    })?;
 
     // Process each post link in the XML file
     for post_link in post_links_iter {
@@ -244,9 +254,11 @@ fn load_post_links(
                 diesel::insert_into(schema::post_links::table)
                     .values(&post_link)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting post link into database: {}", e))?;
+                    .map_err(|error| {
+                        format!("Error inserting post link into database: {}", error)
+                    })?;
             }
-            Err(e) => eprintln!("Error processing post link: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing post link: {}", error), // Log error but continue processing
         }
     }
 
@@ -275,7 +287,7 @@ fn load_tags(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for Tag objects from XML file
     let tags_iter = XmlModelIterator::<Tag>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for tags: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for tags: {}", error))?;
 
     // Process each tag in the XML file
     for tag in tags_iter {
@@ -285,9 +297,9 @@ fn load_tags(
                 diesel::insert_into(schema::tags::table)
                     .values(&tag)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting tag into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting tag into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing tag: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing tag: {}", error), // Log error but continue processing
         }
     }
 
@@ -316,7 +328,7 @@ fn load_users(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for User objects from XML file
     let users_iter = XmlModelIterator::<User>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for users: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for users: {}", error))?;
 
     // Process each user in the XML file
     for user in users_iter {
@@ -326,9 +338,9 @@ fn load_users(
                 diesel::insert_into(schema::users::table)
                     .values(&user)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting user into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting user into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing user: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing user: {}", error), // Log error but continue processing
         }
     }
 
@@ -357,7 +369,7 @@ fn load_votes(
 ) -> Result<(), Box<dyn std::error::Error>> {
     // Create iterator for Vote objects from XML file
     let votes_iter = XmlModelIterator::<Vote>::new(file_path)
-        .map_err(|e| format!("Error creating XML model iterator for votes: {}", e))?;
+        .map_err(|error| format!("Error creating XML model iterator for votes: {}", error))?;
 
     // Process each vote in the XML file
     for vote in votes_iter {
@@ -367,9 +379,9 @@ fn load_votes(
                 diesel::insert_into(schema::votes::table)
                     .values(&vote)
                     .execute(connection)
-                    .map_err(|e| format!("Error inserting vote into database: {}", e))?;
+                    .map_err(|error| format!("Error inserting vote into database: {}", error))?;
             }
-            Err(e) => eprintln!("Error processing vote: {}", e), // Log error but continue processing
+            Err(error) => eprintln!("Error processing vote: {}", error), // Log error but continue processing
         }
     }
 
