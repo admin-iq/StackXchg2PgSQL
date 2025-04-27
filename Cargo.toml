@@ -1,0 +1,12 @@
+[package]
+name = "stackxchg2pgsql"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.40"
+clap = { version = "4.5.28", features = ["derive"] }
+diesel = { version = "2.2.9", features = ["chrono", "postgres", "r2d2"] }
+quick-xml = { version = "0.37.4", features = ["serialize"] }
+serde = { version = "1.0.219", features = ["derive"] }
+thiserror = "2.0.12"

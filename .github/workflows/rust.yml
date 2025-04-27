@@ -1,0 +1,38 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # Run the linter.
+    - name: Run clippy
+      run: cargo clippy
+
+    # Run the formatter.
+    - name: Run fmt
+      run: cargo fmt -- --check
+
+    # Generate the documentation.
+    - name: Run doc
+      run: cargo doc --no-deps --document-private-items
+
+    # Install the audit tool.
+    - name: Install audit
+      run: cargo install cargo-audit
+
+    # Run the audit tool.
+    - name: Run audit
+      run: cargo audit
